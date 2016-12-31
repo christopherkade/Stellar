@@ -7,7 +7,7 @@ import android.widget.ImageView;
 import stellar.kade_c.com.stellar.R;
 
 /**
- * Loads the image and displays it in the ImageView.
+ * Called when we need to display a picture in a bigger view.
  */
 public class GalleryDetailsActivity extends AppCompatActivity {
 

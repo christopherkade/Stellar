@@ -68,23 +68,33 @@ public class APD extends Fragment implements HomeViewPager.FragmentSwipeItf {
         return view;
     }
 
+    /**
+     * Handles the click of our displayed image.
+     */
     // TODO: Save image when displayed, not when clicked.
     private void handleImageClick() {
         final ImageView apd = (ImageView) view.findViewById(R.id.apd_image);
         final TextView title_text = (TextView) view.findViewById(R.id.title_text);
 
         apd.setOnClickListener(new View.OnClickListener() {
+
+            /**
+             * Display a bigger image in anoter activity.
+             */
             @Override
             public void onClick(View view) {
                 String picture_title = title_text.getText().toString();
+
+                // Save the image in internal files.
                 saveImage();
 
-                //Create intent
+                // Create intent.
                 Intent intent = new Intent(getActivity(), GalleryDetailsActivity.class);
                 intent.putExtra("filename", picture_title);
 
-                //Start details activity
+                // Start details activity.
                 startActivity(intent);
+
                 apd.destroyDrawingCache();
             }
         });
@@ -181,7 +191,7 @@ public class APD extends Fragment implements HomeViewPager.FragmentSwipeItf {
     }
 
     /**
-     * Calls method to save image (Bitmap) in local files.
+     * Calls method to save the image (Bitmap) in local files.
      */
     private void saveImage() {
         final ImageView apd_image = (ImageView) view.findViewById(R.id.apd_image);
@@ -199,7 +209,6 @@ public class APD extends Fragment implements HomeViewPager.FragmentSwipeItf {
 
     @Override
     public void fragmentBecameVisible() {}
-
 
     /**
      * Handles the ADP API Request.

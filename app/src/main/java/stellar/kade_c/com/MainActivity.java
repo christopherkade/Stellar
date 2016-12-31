@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Replaces the current fragment and closes the Drawer.
+     * Replaces the current fragment.
      * @param fragment
      */
     public void replaceFragment(final Fragment fragment) {
