@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Stellar</string>
+    <string name="apd_text">Astronomy Picture of the Day</string>
+    <string name="imagery_text">Imagery</string>
+    <string name="explanation_text">No explanation</string>
+    <string name="date_text">No date</string>
+    <string name="apd_content_desc">APD image</string>
+    <string name="calendar_content_desc">calendar image</string>
+
+    <string-array name="image_ids">
+        <item>@drawable/apod</item>
+        <item>@drawable/apod</item>
+        <item>@drawable/apod</item>
+        <item>@drawable/apod</item>
+        <item>@drawable/apod</item>
+        <item>@drawable/apod</item>
+        <item>@drawable/apod</item>
+        <item>@drawable/apod</item>
+        <item>@drawable/apod</item>
+        <item>@drawable/apod</item>
+    </string-array>
+</resources>
