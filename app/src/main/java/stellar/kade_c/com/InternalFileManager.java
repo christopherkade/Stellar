@@ -69,13 +69,4 @@ public class InternalFileManager {
         }
         return b;
     }
-
-    public void getFiles() {
-        File dirFiles = context.getFilesDir();
-        for (String strFile : dirFiles.list())
-        {
-            System.out.println(strFile);
-            // strFile is the file name
-        }
-    }
 }
