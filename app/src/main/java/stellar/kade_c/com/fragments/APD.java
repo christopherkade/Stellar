@@ -56,8 +56,11 @@ public class APD extends Fragment implements HomeViewPager.FragmentSwipeItf {
                              ViewGroup container, Bundle savedInstanceState) {
         view =  inflater.inflate(R.layout.apd, container, false);
 
+        // Set current date by default.
+        setDate(0, 0, 0, true);
+
         // Gets / Displays information.
-        displayAPD(true);
+        displayAPD();
 
         // Handles APD click.
         handleImageClick();
@@ -101,6 +104,24 @@ public class APD extends Fragment implements HomeViewPager.FragmentSwipeItf {
     }
 
     /**
+     * Sets the date displayed on the DatePicker.
+     */
+    private void setDate(int year, int month, int day, boolean currentDate) {
+        final Calendar c = Calendar.getInstance();
+
+        if (currentDate) {
+            yearSelected = c.get(Calendar.YEAR);
+            monthSelected = c.get(Calendar.MONTH) + 1;
+            daySelected = c.get(Calendar.DAY_OF_MONTH);
+        } else {
+            yearSelected = year;
+            monthSelected = month;
+            daySelected = day;
+        }
+        date = yearSelected + "-" + monthSelected + "-" + daySelected;
+    }
+
+    /**
      * Sets up the calendar listeners.
      * Catches the input of a new date and acts accordingly.
      */
@@ -119,15 +140,11 @@ public class APD extends Fragment implements HomeViewPager.FragmentSwipeItf {
 
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
                     @Override
-                    public void onDateSet(android.widget.DatePicker datePicker, int i, int i1, int i2) {
-
+                    public void onDateSet(android.widget.DatePicker datePicker, int year, int month, int day) {
                         // Save date set.
-                        yearSelected = datePicker.getYear();
-                        monthSelected = datePicker.getMonth() + 1;
-                        daySelected = datePicker.getDayOfMonth();
-                        date = yearSelected + "-" + monthSelected + "-" + daySelected;
+                        setDate(year, month, day, false);
 
-                        displayAPD(false);
+                        displayAPD();
                     }
                 }, yearSelected, monthSelected, daySelected);
                 datePickerDialog.getDatePicker().setMaxDate(c.getTimeInMillis());
@@ -139,18 +156,8 @@ public class APD extends Fragment implements HomeViewPager.FragmentSwipeItf {
     /**
      * Gets information to display and displays it.
      */
-    private void displayAPD(boolean currentDate) {
+    private void displayAPD() {
         final APDRequest apdRequest = new APDRequest();
-
-        // If first time opening it, display current date by default.
-        if (currentDate) {
-            final Calendar c = Calendar.getInstance();
-            yearSelected = c.get(Calendar.YEAR);
-            monthSelected = c.get(Calendar.MONTH) + 1;
-            daySelected = c.get(Calendar.DAY_OF_MONTH);
-
-            date = yearSelected + "-" + monthSelected + "-" + daySelected;
-        }
 
         try {
             // Get data with date selected.
