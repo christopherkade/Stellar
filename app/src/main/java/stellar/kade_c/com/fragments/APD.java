@@ -14,6 +14,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.GlideBitmapDrawable;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +44,7 @@ public class APD extends Fragment implements HomeViewPager.FragmentSwipeItf {
     private int monthSelected;
     private int daySelected;
     private String date;
+    boolean first = true;
 
     /**
      * APD information
@@ -89,7 +94,7 @@ public class APD extends Fragment implements HomeViewPager.FragmentSwipeItf {
                 String picture_title = title_text.getText().toString();
 
                 // Save the image in internal files.
-                saveImage();
+//                saveImage();
 
                 // Create intent.
                 Intent intent = new Intent(getActivity(), GalleryDetailsActivity.class);
@@ -187,6 +192,28 @@ public class APD extends Fragment implements HomeViewPager.FragmentSwipeItf {
         Glide.with(getContext()).load(apdInfo.url)
                 .thumbnail(0.5f)
                 .crossFade()
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        return true;
+                    }
+
+                    /**
+                     * Save image once loaded.
+                     */
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        if (first) {
+                            GlideBitmapDrawable glideBitmapDrawable = (GlideBitmapDrawable) resource;
+                            Bitmap bm = glideBitmapDrawable.getBitmap();
+                            saveImage(bm);
+                            first = false;
+                        } else {
+                            first = true;
+                        }
+                        return false;
+                    }
+                })
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(apd_image);
 
@@ -200,14 +227,9 @@ public class APD extends Fragment implements HomeViewPager.FragmentSwipeItf {
     /**
      * Calls method to save the image (Bitmap) in local files.
      */
-    private void saveImage() {
-        final ImageView apd_image = (ImageView) view.findViewById(R.id.apd_image);
+    private void saveImage(Bitmap bitmap) {
         final InternalFileManager IFH = new InternalFileManager(getContext());
         final TextView titletv = (TextView) view.findViewById(R.id.title_text);
-
-        apd_image.setDrawingCacheEnabled(true);
-        apd_image.buildDrawingCache(true);
-        Bitmap bitmap = apd_image.getDrawingCache();
 
         String title = titletv.getText().toString();
         IFH.savePicture(title, bitmap, getContext());
